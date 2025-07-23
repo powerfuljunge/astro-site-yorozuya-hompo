@@ -1,0 +1,157 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import Breadcrumb from '../../../../components/Breadcrumb.astro';
+import { fetchProducts } from '../../../../lib/contentful';
+import { categories } from '../../../../data/categories';
+import { generateBreadcrumbs } from '../../../../lib/generateBreadcrumbs';
+
+export async function getStaticPaths() {
+  const products = await fetchProducts();
+
+  return products.map((p) => ({
+    params: {
+      category: p.category,
+      slug: p.slug,
+    },
+  }));
+}
+
+const { category, slug } = Astro.params;
+const product = (await fetchProducts()).find(
+  (p) => p.slug === slug && p.category === category
+);
+
+const breadcrumbs = generateBreadcrumbs(Astro.url.pathname);
+const categoryEntry = categories.find((c) => c.slug === category);
+const categoryName = categoryEntry?.name ?? category;
+
+const breadcrumbLinks = [
+  { label: 'ホーム', href: '/' },
+  { label: 'サービス紹介', href: '/services' },
+  { label: '物販事業', href: '/services/retail' },
+  { label: categoryName, href: `/services/retail/${category}` },
+];
+
+if (!product) {
+  breadcrumbLinks.push({ label: '商品が見つかりません' });
+} else {
+  breadcrumbLinks.push({ label: product.title, href: `/services/retail/${category}/${slug}` });
+}
+
+// 構造化データ（存在する商品だけ）
+const productJsonLd = product && {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.title,
+  image: [product.image],
+  description: product.description.replace(/\n/g, ' '),
+  sku: product.slug,
+  offers: {
+    "@type": "Offer",
+    priceCurrency: "JPY",
+    price: product.price,
+    availability: `https://schema.org/${product.available ? 'InStock' : 'OutOfStock'}`,
+    url: `https://yorozuya-hompo.com/services/retail/${category}/${slug}`,
+    priceValidUntil: "2025-12-31"
+  }
+};
+---
+
+<Layout title={product?.title ?? '商品が見つかりません'} breadcrumbLinks={breadcrumbLinks}>
+  <Breadcrumb slot="breadcrumb" links={breadcrumbLinks} />
+
+  {product ? (
+    <>
+      <div class="product-detail">
+        <h1 class="product-title">{product.title}</h1>
+        <img src={product.image} alt={product.title} class="product-image" />
+        <pre class="product-description">{product.description}</pre>
+        <p class="product-price">価格: ¥{product.price}</p>
+        <p class={product.available ? 'stock' : 'out-of-stock'}>
+          {product.available ? '✅ 在庫あり' : '❌ 在庫なし'}
+        </p>
+        {product.baseUrl && (
+          <p>
+            <a class="base-link" href={product.baseUrl} target="_blank" rel="noopener noreferrer">
+              よろずや本舗BASEショップで購入する
+            </a>
+          </p>
+        )}
+        <p>
+          <a href={`/services/retail/${category}`}>← カテゴリ一覧に戻る</a>
+        </p>
+      </div>
+
+      <script type="application/ld+json">
+        {JSON.stringify(productJsonLd)}
+      </script>
+    </>
+  ) : (
+    <div class="product-not-found">
+      <h1 class="text-2xl font-bold text-red-600 mb-4">商品が見つかりません</h1>
+      <p class="mb-4">お探しの商品は存在しないか、削除された可能性があります。</p>
+      <a href={`/services/retail/${category}`} class="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+        カテゴリ一覧に戻る
+      </a>
+    </div>
+  )}
+</Layout>
+
+<style>
+  .product-detail {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .product-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .product-description {
+    white-space: pre-wrap;
+    margin: 1.5rem 0;
+    font-size: 1rem;
+    color: #444;
+  }
+
+  .product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007700;
+  }
+
+  .stock {
+    font-weight: bold;
+    color: green;
+  }
+
+  .out-of-stock {
+    font-weight: bold;
+    color: red;
+  }
+
+  .base-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    text-decoration: none;
+    color: #0066cc;
+    font-weight: bold;
+  }
+
+  .product-not-found {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff4f4;
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    text-align: center;
+  }
+</style>

@@ -1,0 +1,15 @@
+---
+const { title, slug, image, price, available, category } = Astro.props;
+---
+
+<a href={`/services/retail/${category}/${slug}`} class="block bg-white shadow hover:shadow-lg transition rounded-lg overflow-hidden">
+  <img src={image} alt={title} class="w-full h-40 sm:h-48 object-cover" />
+
+  <div class="p-3 sm:p-4 text-sm sm:text-base">
+    <h3 class="text-base sm:text-lg font-semibold mb-2">{title}</h3>
+    <p class="text-green-700 font-bold mb-1">価格: ¥{price}</p>
+    <p class={available ? 'text-green-600' : 'text-red-500'}>
+      {available ? '✅ 在庫あり' : '❌ 在庫なし'}
+    </p>
+  </div>
+</a>

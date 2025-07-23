@@ -3,6 +3,7 @@ dist/
 
 # generated types
 .astro/
+src/lib/contentful.js
 
 # dependencies
 node_modules/

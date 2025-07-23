@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="サービス紹介 | よろずや本舗">
+  <section class="px-4 py-10 max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">サービス紹介</h1>
+    <p class="mb-10 text-gray-700">
+      よろずや本舗が提供する主なサービス内容をご紹介します。
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- 製造業コンサル -->
+      <div class="bg-white rounded-lg shadow p-4 flex flex-col h-full">
+        <img src="/assets/consulting.webp" alt="製造業コンサル" class="w-full h-40 object-cover rounded-md mb-4" />
+        <h2 class="text-xl font-semibold mb-2">🔧 製造業コンサルティング</h2>
+        <p class="text-gray-700 flex-grow">
+          40年超の工作機械メーカー勤務での営業、マーケティング業務。長い海外勤務で培った交渉ノウハウもあります。
+        </p>
+      </div>
+
+      <a href="/services/retail" class="block hover:opacity-80 transition-shadow">
+
+        <!-- 物販 -->
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col h-full">
+          <img src="/assets/sales.webp" alt="物販事業" class="w-full h-40 object-cover rounded-md mb-4" />
+          <h2 class="text-xl font-semibold mb-2">📦 物販事業</h2>
+          <p class="text-gray-700 flex-grow">
+            使う人が喜びを日々感じられるような、わくわくする製品を取り扱います。
+          </p>
+        </div>
+      </a>
+
+      <!-- 通訳・翻訳 -->
+      <div class="bg-white rounded-lg shadow p-4 flex flex-col h-full">
+        <img src="/assets/translation.webp" alt="翻訳サービス" class="w-full h-40 object-cover rounded-md mb-4" />
+        <h2 class="text-xl font-semibold mb-2">🌐 通訳・翻訳サービス</h2>
+        <p class="text-gray-700 flex-grow">
+          ドイツ語、英語での通訳・翻訳をします。単に訳すだけではなく、交渉をスムーズに進めるお手伝いをします。
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
