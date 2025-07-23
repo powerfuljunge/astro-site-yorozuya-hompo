@@ -1,0 +1,73 @@
+---
+// Header.astro
+import { useState } from 'astro/jsx-runtime';
+---
+
+<style>
+.drawer-open {
+  transform: translateX(0%);
+}
+.drawer-closed {
+  transform: translateX(-100%);
+}
+</style>
+
+<!-- ✅ スマホ用ヘッダー（ハンバーガー） -->
+<header class="sm:hidden bg-white shadow-md fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3">
+  <h1 class="text-lg font-bold text-gray-800">よろずや本舗</h1>
+  <button id="menu-toggle" class="text-2xl focus:outline-none">☰</button>
+</header>
+
+<!-- ✅ スマホ用ドロワーメニュー -->
+<div id="mobile-drawer" class="sm:hidden fixed top-0 left-0 h-full w-64 bg-white shadow transform transition-transform duration-300 ease-in-out drawer-closed z-50">
+  <div class="flex items-center justify-between px-4 py-3 border-b">
+    <span class="text-lg font-bold">メニュー</span>
+    <button id="menu-close" class="text-xl font-bold">&times;</button>
+  </div>
+  <nav class="flex flex-col p-4 gap-2">
+    <a href="/" class="hover:bg-gray-100 px-2 py-1 rounded">ホーム</a>
+    <a href="/services" class="hover:bg-gray-100 px-2 py-1 rounded">サービス紹介</a>
+    <a href="/about" class="hover:bg-gray-100 px-2 py-1 rounded">会社概要</a>
+    <a href="/contact" class="hover:bg-gray-100 px-2 py-1 rounded">お問い合わせ</a>
+  </nav>
+</div>
+
+<!-- ✅ PC用ヒーローセクション -->
+<section
+  class="hidden sm:block relative w-full h-[180px] md:h-[220px] bg-[url('/assets/yorozuya-header-03.png')] bg-cover bg-center text-center"
+>
+  <div class="absolute inset-0 flex flex-col items-center justify-center px-4 text-gray-700 z-0">
+    <h1 class="text-2xl md:text-4xl font-bold drop-shadow-md">よろずや本舗</h1>
+    <p class="text-sm md:text-base mt-1 drop-shadow-sm">
+      何は無くともよろずや本舗。困った時にはすぐに駆けつけます。
+    </p>
+  </div>
+
+  <nav
+    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-center gap-2 px-2 w-full max-w-xs sm:max-w-none sm:gap-4 z-10 overflow-x-auto"
+  >
+    <a href="/" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">ホーム</a>
+    <a href="/services" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">サービス紹介</a>
+    <a href="/about" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">会社概要</a>
+    <a href="/contact" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">お問い合わせ</a>
+  </nav>
+</section>
+
+<!-- ✅ スクリプト（ドロワーの開閉制御） -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const drawer = document.getElementById('mobile-drawer');
+    const toggle = document.getElementById('menu-toggle');
+    const close = document.getElementById('menu-close');
+
+    toggle?.addEventListener('click', () => {
+      drawer.classList.remove('drawer-closed');
+      drawer.classList.add('drawer-open');
+    });
+
+    close?.addEventListener('click', () => {
+      drawer.classList.remove('drawer-open');
+      drawer.classList.add('drawer-closed');
+    });
+  });
+</script>

@@ -1,4 +1,5 @@
 ---
+import Header from '../components/Header.astro';
 import { generateBreadcrumbs } from '../lib/generateBreadcrumbs.ts';
 import Breadcrumb from '../components/Breadcrumb.astro';
 
@@ -25,31 +26,11 @@ const breadcrumbLinks = generateBreadcrumbs(pathname);
   </head>
   <body class="text-gray-800 font-sans">
 
-    <!-- ✅ ヘッダー -->
-    <section
-      class="relative w-full h-[180px] md:h-[220px] bg-[url('/assets/yorozuya-header-03.png')] bg-cover bg-center text-center hidden sm:block"
-    >
-
-      <div class="absolute inset-0 flex flex-col items-center justify-center px-4 text-gray-700 z-0">
-        <h1 class="text-2xl md:text-4xl font-bold drop-shadow-md">よろずや本舗</h1>
-        <p class="text-sm md:text-base mt-1 drop-shadow-sm">
-          何は無くともよろずや本舗。困った時にはすぐに駆けつけます。
-        </p>
-      </div>
-
-      <nav
-        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-center gap-2 px-2 w-full max-w-xs sm:max-w-none sm:gap-4 z-10 overflow-x-auto"
-      >
-        <a href="/" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">ホーム</a>
-        <a href="/services" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">サービス紹介</a>
-        <a href="/about" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">会社概要</a>
-        <a href="/contact" class="bg-gray-100 px-3 py-1 rounded text-sm whitespace-nowrap hover:bg-gray-200">お問い合わせ</a>
-      </nav>
-
-    </section>
+    <!-- ✅ 置き換えたヘッダー -->
+    <Header />
 
     <!-- ✅ メイン -->
-    <main class="max-w-4xl mx-auto px-4 py-4 space-y-2">
+    <main class="max-w-4xl mx-auto px-4 py-4 space-y-2 pt-20 sm:pt-6">
       {breadcrumbLinks.length > 1 && (
         <div>
           <slot name="breadcrumb">
