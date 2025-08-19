@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-// Netlifyにフォームを確実に検出させたい場合は静的化しておくと安心
 export const prerender = true;
 ---
 
@@ -11,86 +10,40 @@ export const prerender = true;
       ご相談・ご依頼など、お気軽にお問い合わせください。
     </p>
 
-    <!-- Netlify Forms -->
     <form
       name="contact"
       method="POST"
       action="/thanks"
       data-netlify="true"
       netlify-honeypot="bot-field"
-      class="bg-white shadow-sm border border-gray-200 rounded-xl p-6 sm:p-8"
+      class="bg-white shadow border rounded-xl p-6"
     >
-      <!-- Netlify がフォームを認識するための hidden -->
       <input type="hidden" name="form-name" value="contact" />
+      <p class="hidden"><label>Do not fill: <input name="bot-field" /></label></p>
 
-      <!-- 蜜壺（スパム対策／ユーザー非表示） -->
-      <p class="hidden">
-        <label>Do not fill this out if you are human: <input name="bot-field" /></label>
-      </p>
-
-      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6">
-        <!-- お名前 -->
-        <label for="name" class="sm:col-span-1 self-center font-medium">お名前/Name</label>
-        <div class="sm:col-span-3">
-          <input
-            id="name"
-            name="name"
-            type="text"
-            autocomplete="name"
-            required
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
-          />
-        </div>
-
-        <!-- メールアドレス -->
-        <label for="email" class="sm:col-span-1 self-center font-medium">メールアドレス/Email</label>
-        <div class="sm:col-span-3">
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
-          />
-        </div>
-
-        <!-- 件名 -->
-        <label for="subject" class="sm:col-span-1 self-center font-medium">件名/Subject</label>
-        <div class="sm:col-span-3">
-          <input
-            id="subject"
-            name="subject"
-            type="text"
-            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
-          />
-        </div>
-
-        <!-- メッセージ -->
-        <label for="message" class="sm:col-span-1 self-center font-medium">メッセージ/Message</label>
-        <div class="sm:col-span-3">
-          <textarea
-            id="message"
-            name="message"
-            required
-            class="w-full min-h-[160px] rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
-          ></textarea>
-        </div>
-
-        <!-- 送信ボタン -->
-        <div class="sm:col-span-4 flex justify-end pt-2">
-          <button
-            type="submit"
-            class="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-2.5 text-white font-semibold hover:brightness-110 transition"
-          >
-            送信/Submit
-          </button>
-        </div>
+      <div class="mb-4">
+        <label for="name" class="block font-medium">お名前/Name</label>
+        <input id="name" name="name" required class="w-full border rounded px-3 py-2" />
       </div>
 
-      <!-- reCAPTCHA を使う場合（必要になったら有効化）
-      <div data-netlify-recaptcha="true" class="mt-6"></div>
-      -->
+      <div class="mb-4">
+        <label for="email" class="block font-medium">メールアドレス/Email</label>
+        <input id="email" name="email" type="email" required class="w-full border rounded px-3 py-2" />
+      </div>
+
+      <div class="mb-4">
+        <label for="subject" class="block font-medium">件名/Submit</label>
+        <input id="subject" name="subject" class="w-full border rounded px-3 py-2" />
+      </div>
+
+      <div class="mb-6">
+        <label for="message" class="block font-medium">メッセージ/Message</label>
+        <textarea id="message" name="message" required class="w-full border rounded px-3 py-2 min-h-[160px]"></textarea>
+      </div>
+
+      <button type="submit" class="rounded-full bg-blue-600 text-white px-6 py-2 font-semibold">
+        送信/Submit
+      </button>
     </form>
   </section>
 </Layout>
