@@ -1,26 +1,96 @@
 ---
 import Layout from '../layouts/Layout.astro';
+// Netlifyにフォームを確実に検出させたい場合は静的化しておくと安心
+export const prerender = true;
 ---
 
 <Layout title="お問い合わせ | よろずや本舗">
-    <section class="px-4 py-10 max-w-6xl mx-auto">
+  <section class="px-4 py-10 max-w-6xl mx-auto">
+    <h1 class="text-2xl font-semibold mb-4">お問い合わせ/Contact Form</h1>
     <p class="mb-10 text-gray-700">
       ご相談・ご依頼など、お気軽にお問い合わせください。
     </p>
 
-    <!-- Googleフォームを埋め込む -->
-    <div style="margin-top: 2rem;">
-      <iframe
-        src="https://forms.gle/RFtZfmy87SWzWN1MA"
-        width="100%"
-        height="1200"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        style="border: none;"
-      >
-        読み込んでいます…
-      </iframe>
-    </div>
+    <!-- Netlify Forms -->
+    <form
+      name="contact"
+      method="POST"
+      action="/thanks"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="bg-white shadow-sm border border-gray-200 rounded-xl p-6 sm:p-8"
+    >
+      <!-- Netlify がフォームを認識するための hidden -->
+      <input type="hidden" name="form-name" value="contact" />
+
+      <!-- 蜜壺（スパム対策／ユーザー非表示） -->
+      <p class="hidden">
+        <label>Do not fill this out if you are human: <input name="bot-field" /></label>
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6">
+        <!-- お名前 -->
+        <label for="name" class="sm:col-span-1 self-center font-medium">お名前/Name</label>
+        <div class="sm:col-span-3">
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            required
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
+          />
+        </div>
+
+        <!-- メールアドレス -->
+        <label for="email" class="sm:col-span-1 self-center font-medium">メールアドレス/Email</label>
+        <div class="sm:col-span-3">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
+          />
+        </div>
+
+        <!-- 件名 -->
+        <label for="subject" class="sm:col-span-1 self-center font-medium">件名/Subject</label>
+        <div class="sm:col-span-3">
+          <input
+            id="subject"
+            name="subject"
+            type="text"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
+          />
+        </div>
+
+        <!-- メッセージ -->
+        <label for="message" class="sm:col-span-1 self-center font-medium">メッセージ/Message</label>
+        <div class="sm:col-span-3">
+          <textarea
+            id="message"
+            name="message"
+            required
+            class="w-full min-h-[160px] rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500"
+          ></textarea>
+        </div>
+
+        <!-- 送信ボタン -->
+        <div class="sm:col-span-4 flex justify-end pt-2">
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-2.5 text-white font-semibold hover:brightness-110 transition"
+          >
+            送信/Submit
+          </button>
+        </div>
+      </div>
+
+      <!-- reCAPTCHA を使う場合（必要になったら有効化）
+      <div data-netlify-recaptcha="true" class="mt-6"></div>
+      -->
+    </form>
   </section>
 </Layout>
